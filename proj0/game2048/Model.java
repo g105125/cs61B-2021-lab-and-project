@@ -1,6 +1,7 @@
 package game2048;
 
 import java.util.Formatter;
+import java.util.HashMap;
 import java.util.Observable;
 
 
@@ -16,7 +17,6 @@ public class Model extends Observable {
     private int maxScore;
     /** True iff game is ended. */
     private boolean gameOver;
-
     /* Coordinate System: column C, row R of the board (where row 0,
      * column 0 is the lower-left corner of the board) will correspond
      * to board.tile(c, r).  Be careful! It works like (x, y) coordinates.
@@ -107,17 +107,48 @@ public class Model extends Observable {
      *    and the trailing tile does not.
      * */
     public boolean tilt(Side side) {
+        board.setViewingPerspective(side);
         boolean changed;
         changed = false;
 
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
-
+        int n=board.size();
+        for(int j=0;j<n;j++){
+        int [] t;
+        t=new int[n];
+            for(int i=n-2;i>=0;i--){
+                if(board.tile(j,i)==null){
+                    continue;
+                }
+                int target=i;
+                for(int k=i+1;k<n;k++) {
+                    if (board.tile(j, k) == null) {
+                        target = k;
+                    } else {
+                        if (board.tile(j, k).value() == board.tile(j, i).value() && t[k] == 0 && t[i] == 0) {
+                            score+=board.tile(j,k).value()*2;
+                            target = k;
+                            t[k] = 1;
+                        }
+                        break;
+                    }
+                }
+                if(target!=i){
+                    changed=true;
+                board.move(j,target,board.tile(j,i));
+                if(t[i]==1){
+                    t[i]=0;
+                    t[target]=1;
+                }}
+            }
+        }
         checkGameOver();
         if (changed) {
             setChanged();
         }
+        board.setViewingPerspective(Side.NORTH);
         return changed;
     }
 
@@ -138,6 +169,14 @@ public class Model extends Observable {
      * */
     public static boolean emptySpaceExists(Board b) {
         // TODO: Fill in this function.
+        int n=b.size();
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(b.tile(i,j)==null){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -148,6 +187,14 @@ public class Model extends Observable {
      */
     public static boolean maxTileExists(Board b) {
         // TODO: Fill in this function.
+        int n=b.size();
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(b.tile(i,j)!=null&&b.tile(i,j).value()==MAX_PIECE){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -159,6 +206,39 @@ public class Model extends Observable {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
+        if(emptySpaceExists(b)){
+            return true;
+        }
+        else{
+            int n=b.size();
+            int front1 =b.tile(0,0).value();
+            int front2=b.tile(0,0).value();
+            for(int j=1;j<n;j++) {
+                int e1 = b.tile(0, j).value();
+                int e2 = b.tile(j, 0).value();
+                if (e1 == front1 || e2 == front2) {
+                    return true;
+                } else {
+                    front1 = e1;
+                    front2 = e2;
+                }
+            }
+            for(int i=1;i<n;i++){
+               front1=b.tile(i,0).value();
+               front2=b.tile(0,i).value();
+                for(int j=1;j<n;j++){
+                    int e1=b.tile(i,j).value();
+                    int e2=b.tile(j,i).value();
+                    if(e1==front1||e2==front2){
+                        return true;
+                    }
+                    else{
+                        front1=e1;
+                        front2=e2;
+                    }
+                }
+            }
+        }
         return false;
     }
 

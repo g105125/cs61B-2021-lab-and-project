@@ -10,7 +10,8 @@ import static org.junit.Assert.*;
  *
  * @author Omar Khan
  */
-public class TestAtLeastOneMoveExists {
+public class
+TestAtLeastOneMoveExists {
 
     /** The Board that we'll be testing on. */
     static Board b;
