@@ -11,10 +11,24 @@ public class SquarePrimesTest {
      * is broken. Write your own JUnit Test to try to uncover the bug!
      */
     @Test
-    public void testSquarePrimesSimple() {
+    public void testSquarePrimesSimple1() {
         IntList lst = IntList.of(14, 15, 16, 17, 18);
         boolean changed = IntListExercises.squarePrimes(lst);
         assertEquals("14 -> 15 -> 16 -> 289 -> 18", lst.toString());
+        assertTrue(changed);
+    }
+    @Test
+    public void testSquarePrimesSimple2() {
+        IntList lst = IntList.of(4);
+        boolean changed = IntListExercises.squarePrimes(lst);
+        assertEquals("4", lst.toString());
+        assertTrue(!changed);
+    }
+    @Test
+    public void testSquarePrimesSimple3() {
+        IntList lst = IntList.of(17, 19,23);
+        boolean changed = IntListExercises.squarePrimes(lst);
+        assertEquals("289 -> 361 -> 529", lst.toString());
         assertTrue(changed);
     }
 }
