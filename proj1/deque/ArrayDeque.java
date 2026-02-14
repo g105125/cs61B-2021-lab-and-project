@@ -106,7 +106,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         }
         int i = 0;
         while (i < this.size()) {
-            if (!(this.get(i) == deque2.get(i))) {
+            if (!(this.get(i).equals(deque2.get(i)))) {
                 return false;
             }
             i++;
