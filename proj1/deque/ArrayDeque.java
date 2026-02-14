@@ -2,115 +2,133 @@ package deque;
 
 import java.util.Iterator;
 
-public class ArrayDeque<T> implements Deque<T>,Iterable<T> {
-    int size;
-    int maxsize;
+public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
+    private int size;
+    private int first;
+    private int rear;
+    private int maxsize;
     T[] items;
-    public ArrayDeque(){
-        this.items=(T[])new Object[8];
-        this.size=0;
-        this.maxsize=8;
+
+    public ArrayDeque() {
+        this.items = (T[]) new Object[8];
+        this.size = 0;
+        this.first = 0;
+        this.rear = 0;
+        this.maxsize = 8;
     }
+
     @Override
-    public void addLast(T item){
-        if(this.size==maxsize){
-            this.resize((int)(this.maxsize*1.15));
+    public void addLast(T item) {
+        if (this.size == maxsize) {
+            this.resize((int) (this.maxsize * 1.15));
         }
-        this.items[this.size++]=item;
+        this.items[this.rear] = item;
+        this.rear = (this.rear + this.maxsize) % this.maxsize;
+        this.size++;
     }
-    private void resize(int newmaxsize){
-        if(newmaxsize<8){
+
+    private void resize(int newmaxsize) {
+        if (newmaxsize < 8) {
             return;
         }
-        @SuppressWarnings("unchecked") T[]newitems=(T[])new Object[newmaxsize];
-        int i=0;
-        while(i<this.size){
-            newitems[i]=this.items[i];
+        @SuppressWarnings("unchecked") T[] newitems = (T[]) new Object[newmaxsize];
+        int i = 0;
+        while (i < this.size) {
+            newitems[i] = this.get(0);
             i++;
         }
-        this.items=newitems;
-        this.maxsize=newmaxsize;
+        this.items = newitems;
+        this.maxsize = newmaxsize;
+        this.first = 0;
+        this.rear = this.size();
     }
+
     @Override
-    public void addFirst(T item){
-        if(this.size==maxsize){
-            this.resize((int)(this.maxsize*1.15));
+    public void addFirst(T item) {
+        if (this.size == maxsize) {
+            this.resize((int) (this.maxsize * 1.15));
         }
-        for(int i=this.size;i>0;i--) {
-            this.items[i] = this.items[i - 1];
-        }
-        this.items[0]=item;
+        this.first = (this.first - 1 + this.maxsize) % this.maxsize;
+        this.items[this.first] = item;
         this.size++;
     }
 
     @Override
-    public void printDeque(){
-        for(int i=0;i<this.size;i++){
+    public void printDeque() {
+        for (int i = this.first; i < this.rear; i = (i + 1) % this.maxsize) {
             System.out.println(this.items[i]);
         }
     }
-    public T removeFirst(){
-        if(this.isEmpty()){
+
+    public T removeFirst() {
+        if (this.isEmpty()) {
             return null;
         }
-        if(this.size<=this.maxsize*0.25){
-            this.resize((int) ((this.size-1)*1.15));
+        if (this.size <= this.maxsize * 0.25) {
+            this.resize((int) ((this.size - 1) * 1.15));
         }
-       T ret=this.items[0];
-        for(int i=1;i<this.size;i++){
-            this.items[i-1]=this.items[i];
-        }
+        T ret = this.items[this.first];
+        this.first = (this.first + 1) % this.maxsize;
         this.size--;
         return ret;
     }
-    public int size(){
+
+    public int size() {
         return this.size;
     }
-    public T removeLast(){
-        if(this.isEmpty()){
+
+    public T removeLast() {
+        if (this.isEmpty()) {
             return null;
         }
-        if(this.size<=this.maxsize*0.25){
-            this.resize((int)((this.size-1)*1.15));
+        if (this.size <= this.maxsize * 0.25) {
+            this.resize((int) ((this.size - 1) * 1.15));
         }
-        return this.items[(this.size--)-1];
+        this.rear = (this.rear - 1 + this.maxsize) % this.maxsize;
+        this.size--;
+        return this.items[this.rear];
     }
-    public T get(int index){
-        if(index<0||index>=this.size()){
+
+    public T get(int index) {
+        if (index < 0 || index >= this.size()) {
             return null;
         }
-        return this.items[index];
+        return this.items[(this.first + index) % this.maxsize];
     }
-    public boolean equals(Object o){
-        if(o==null||!(o instanceof ArrayDeque)){
+
+    public boolean equals(Object o) {
+        if (o == null || !(o instanceof Deque)) {
             return false;
         }
-        ArrayDeque<T>deque2=(ArrayDeque<T>)o;
-        if(this.size()!=deque2.size()){
+        Deque<T> deque2 = (Deque<T>) o;
+        if (this.size() != deque2.size()) {
             return false;
         }
-        int i=0;
-        while(i<this.size()){
-            if(!(this.items[i]==deque2.items[i])){
+        int i = 0;
+        while (i < this.size()) {
+            if (!(this.get(i) == deque2.get(i))) {
                 return false;
             }
             i++;
         }
         return true;
     }
-    public Iterator<T> iterator(){
+
+    public Iterator<T> iterator() {
         return new ArrayDequeiterator();
     }
-    private  class ArrayDequeiterator implements Iterator<T>{
-        int loca=0;
+
+    private class ArrayDequeiterator implements Iterator<T> {
+        int loca = 0;
 
         @Override
         public boolean hasNext() {
-            return loca<size();
+            return loca < size();
         }
+
         @Override
         public T next() {
-            return items[this.loca++];
+            return items[(this.loca + first) % maxsize];
         }
     }
 }
