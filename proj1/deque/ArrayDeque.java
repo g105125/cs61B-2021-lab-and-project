@@ -23,7 +23,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             this.resize((int) (this.maxsize * 1.15));
         }
         this.items[this.rear] = item;
-        this.rear = (this.rear + this.maxsize) % this.maxsize;
+        this.rear = (this.rear + 1) % this.maxsize;
         this.size++;
     }
 
@@ -128,7 +128,9 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
         @Override
         public T next() {
-            return items[(this.loca + first) % maxsize];
+            T ret = items[(this.loca + first) % maxsize];
+            loca++;
+            return ret;
         }
     }
 }
