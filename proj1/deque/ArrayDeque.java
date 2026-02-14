@@ -7,7 +7,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private int first;
     private int rear;
     private int maxsize;
-    T[] items;
+    private T[] items;
 
     public ArrayDeque() {
         this.items = (T[]) new Object[8];
@@ -34,7 +34,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         @SuppressWarnings("unchecked") T[] newitems = (T[]) new Object[newmaxsize];
         int i = 0;
         while (i < this.size) {
-            newitems[i] = this.get(0);
+            newitems[i] = this.get(i);
             i++;
         }
         this.items = newitems;
