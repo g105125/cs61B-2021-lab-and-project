@@ -10,10 +10,13 @@ import static org.junit.Assert.*;
 /** Tests the GuitarString class.
  *  @author Josh Hug
  */
+
 public class TestGuitarString  {
 
     @Test
     public void testPluckTheAString() {
+        System.setProperty("javax.sound.sampled.Clip", "com.sun.media.sound.DirectAudioDeviceProvider");
+        System.setProperty("javax.sound.sampled.Port", "com.sun.media.sound.PortMixerProvider");
         GuitarString aString = new GuitarString(GuitarHeroLite.CONCERT_A);
         aString.pluck();
         for (int i = 0; i < 50000; i += 1) {
