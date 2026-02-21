@@ -63,16 +63,19 @@ public class StudentArrayDeque<T> {
                 if (this.e != this.d) {
                     if (this.e == this.a.length - 1) {
                         var1 = this.a[0];
+                        //this.a[0]=null;
                         this.e = 0;
                         this.h = false;
                         return (T) var1;
                     } else {
                         var1 = this.a[this.e + 1];
+                        // this.a[this.e+1]=null;
                         ++this.e;
                         return (T) var1;
                     }
                 } else if (this.h) {
                     var1 = this.a[this.e + 1];
+                    // this.a[this.e+1]=null;
                     ++this.e;
                     if (this.e == this.a.length) {
                         this.h = false;
@@ -82,12 +85,14 @@ public class StudentArrayDeque<T> {
                     return (T) var1;
                 } else if (this.e == this.a.length - 1) {
                     var1 = this.a[0];
+                    this.a[0] = null;
                     this.e = 0;
                     this.d = 0;
                     this.g = false;
                     return (T) var1;
                 } else {
                     var1 = this.a[this.d + 1];
+                    //this.a[this.d+1]=null;
                     this.e = this.d + 1;
                     ++this.d;
                     this.h = false;
@@ -110,11 +115,13 @@ public class StudentArrayDeque<T> {
                 if (this.f != 1 + this.d) {
                     if (this.f == 0) {
                         var1 = this.a[this.a.length - 1];
+                        //this.a[this.a.length-1]=null;
                         this.f = this.a.length;
                         this.g = false;
                         return (T) var1;
                     } else {
                         var1 = this.a[this.f - 1];
+                        //this.a[this.f -1]=null;
                         --this.f;
                         if (this.f == 0) {
                             this.g = false;
@@ -125,6 +132,7 @@ public class StudentArrayDeque<T> {
                     }
                 } else if (this.g) {
                     var1 = this.a[this.f - 1];
+                    // this.a[this.f -1]=null;
                     --this.f;
                     if (this.f <= 0) {
                         this.g = false;
@@ -134,11 +142,12 @@ public class StudentArrayDeque<T> {
                     return (T) var1;
                 } else if (this.f == 0) {
                     var1 = this.a[this.a.length - 1];
-                    this.a[this.a.length - 1] = null;
+                    // this.a[this.a.length - 1] = null;
                     this.f = this.a.length - 1;
                     return (T) var1;
                 } else {
                     var1 = this.a[this.d];
+                    // this.a[this.d]=null;
                     this.f = this.d--;
                     this.g = false;
                     return (T) var1;
