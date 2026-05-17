@@ -1,6 +1,8 @@
 package capers;
 
 import java.io.File;
+import java.io.IOException;
+
 import static capers.Utils.*;
 
 /** A repository for Capers 
@@ -18,9 +20,9 @@ public class CapersRepository {
     static final File CWD = new File(System.getProperty("user.dir"));
 
     /** Main metadata folder. */
-    static final File CAPERS_FOLDER = null; // TODO Hint: look at the `join`
-                                            //      function in Utils
-
+    static final File CAPERS_FOLDER = join(CWD,".capers"); // TODO Hint: look at the `join`
+    static final File DOGS_FOLDER =join(CAPERS_FOLDER,"dogs");//      function in Utils
+    static final File STORY =join(CAPERS_FOLDER,"story.txt");
     /**
      * Does required filesystem operations to allow for persistence.
      * (creates any necessary folders or files)
@@ -30,8 +32,14 @@ public class CapersRepository {
      *    - dogs/ -- folder containing all of the persistent data for dogs
      *    - story -- file containing the current story
      */
-    public static void setupPersistence() {
-        // TODO
+    public static void setupPersistence  () throws IOException {
+        if(!CAPERS_FOLDER.exists())
+            CAPERS_FOLDER.mkdir();
+        if(!DOGS_FOLDER.exists())
+            DOGS_FOLDER.mkdir();
+        if(!STORY.exists()){
+            STORY.createNewFile();
+        }
     }
 
     /**
@@ -40,7 +48,12 @@ public class CapersRepository {
      * @param text String of the text to be appended to the story
      */
     public static void writeStory(String text) {
-        // TODO
+
+        String oristory=readContentsAsString(STORY);
+
+        String newstory=oristory+text+"\n";
+        System.out.println(newstory);
+        writeContents(STORY,newstory);
     }
 
     /**
@@ -48,8 +61,11 @@ public class CapersRepository {
      * three non-command arguments of args (name, breed, age).
      * Also prints out the dog's information using toString().
      */
-    public static void makeDog(String name, String breed, int age) {
+    public static void makeDog(String name, String breed, int age) throws IOException{
         // TODO
+        Dog d=new Dog(name,breed,age);
+        d.saveDog();
+        d.f();
     }
 
     /**
@@ -58,7 +74,9 @@ public class CapersRepository {
      * Chooses dog to advance based on the first non-command argument of args.
      * @param name String name of the Dog whose birthday we're celebrating.
      */
-    public static void celebrateBirthday(String name) {
-        // TODO
+    public static void celebrateBirthday(String name) throws IOException{
+    Dog d=Dog.fromFile(name);
+    d.haveBirthday();
+    d.saveDog();
     }
 }
