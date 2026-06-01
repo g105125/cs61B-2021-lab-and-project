@@ -43,7 +43,7 @@ public class Repository {
 
     public static final File DELSTORAGE=join(GITLET_DIR,"delstorage");
 
-    public static void Init() throws IOException {
+    public static void Init(){
         if(GITLET_DIR.exists()){
             System.out.println("A Gitlet version-control system already exists in the current directory.");
             return;
@@ -52,13 +52,9 @@ public class Repository {
         COMMITS_DIR.mkdir();
         BLOBS_DIR.mkdir();
         BRANCHES_DIR.mkdir();
-        HEAD.createNewFile();
-        ADDSTORAGE.createNewFile();
-        DELSTORAGE.createNewFile();
         String message="initial commit";
         Commit c=new Commit(message,formatdate(new Date(0)),null,null,new TreeMap<String,String>());
         File master=join(BRANCHES_DIR,"master");
-        master.createNewFile();
         writeContents(master,commit(c));
         writeContents(HEAD,"master");
         writeObject(ADDSTORAGE,new TreeMap<String,String>());
@@ -69,14 +65,13 @@ public class Repository {
         sdf.setTimeZone(TimeZone.getDefault());
         return sdf.format(date);
     }
-    private static String commit(Commit c) throws IOException {
+    private static String commit(Commit c){
         String name=sha1("commit",c.message,c.date,c.parent1==null?"":c.parent1,c.parent2==null?"":c.parent2,c.files.toString());
         File f=join(COMMITS_DIR,name);
-        f.createNewFile();
         writeObject(f,c);
         return name;
     }
-    public static void Add(String filename) throws IOException {
+    public static void Add(String filename){
         if(!GITLET_DIR.exists()){
             System.out.println("Not in an initialized Gitlet directory.");
             return;
@@ -96,7 +91,6 @@ public class Repository {
             return;
         }
         File blobfile=join(BLOBS_DIR,blobname);
-        blobfile.createNewFile();
         writeContents(blobfile,filetext);
         addstorage.put(filename,blobname);
         writeObject(ADDSTORAGE,addstorage);
@@ -185,7 +179,7 @@ public class Repository {
             c=readObject(join(COMMITS_DIR,name),Commit.class);
         }
     }
-    public static void Checkout1(String name) throws IOException {
+    public static void Checkout1(String name){
         Commit c=readObject(join(COMMITS_DIR,getheadhash()),Commit.class);
         if(c.files.get(name)==null){
             System.out.println("File does not exist in that commit.");
@@ -224,9 +218,8 @@ public class Repository {
     public static void Checkout3(String branchname){
 
     }
-    private static void loadfile(String filename,String blobname) throws IOException {
+    private static void loadfile(String filename,String blobname) {
         File f=join(CWD,filename);
-        if(!f.exists()) f.createNewFile();
         String text=readContentsAsString(join(BLOBS_DIR,blobname));
         writeContents(f,text);
     }
