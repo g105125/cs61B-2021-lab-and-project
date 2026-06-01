@@ -120,7 +120,7 @@ public class Repository {
         writeObject(ADDSTORAGE,addstorage);
         writeObject(DELSTORAGE,delstorage);
     }
-    public static void Commit(String message) throws IOException {
+    public static void Commit(String message){
         if(!GITLET_DIR.exists()){
             System.out.println("Not in an initialized Gitlet directory.");
             return;
