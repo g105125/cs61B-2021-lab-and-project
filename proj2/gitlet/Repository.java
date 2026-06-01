@@ -188,7 +188,7 @@ public class Repository {
         String text=readContentsAsString(join(BLOBS_DIR,c.files.get(name)));
         writeContents(join(CWD,name),text);
     }
-    public static void Checkout2(String commitid,String filename) throws IOException {
+    public static void Checkout2(String commitid,String filename) {
         Commit c=new Commit();
         File f=join(COMMITS_DIR,commitid);
         if(f.exists()){
