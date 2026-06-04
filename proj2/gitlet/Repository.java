@@ -670,38 +670,30 @@ public class Repository {
         return blobName;
     }
     private static String getSplitPoint(String hash1, String hash2) {
-        ArrayDeque<String> q = new ArrayDeque<>();
-        TreeSet<String> commits1 = new TreeSet<>();
-        commits1.add(hash1);
-        q.push(hash1);
-        while (!q.isEmpty()) {
-            String s = q.getFirst();
-            q.pop();
+        // 第一次遍历：收集 hash1 的所有祖先（用 BFS 或 DFS，无所谓）
+        Set<String> ancestors1 = new HashSet<>();
+        Deque<String> queue = new ArrayDeque<>();
+        ancestors1.add(hash1);
+        queue.add(hash1);
+        while (!queue.isEmpty()) {
+            String s = queue.removeFirst();
             Commit c = readObject(join(COMMITS_DIR, s), Commit.class);
-            if (c.parent1 != null && !commits1.contains(c.parent1)) {
-                commits1.add(c.parent1);
-                q.addLast(c.parent1);
-            }
-            if (c.parent2 != null && !commits1.contains(c.parent2)) {
-                commits1.add(c.parent2);
-                q.addLast(c.parent2);
-            }
+            if (c.parent1 != null && ancestors1.add(c.parent1))
+                queue.addLast(c.parent1);
+            if (c.parent2 != null && ancestors1.add(c.parent2))
+                queue.addLast(c.parent2);
         }
-        q.push(hash2);
-        while (!q.isEmpty()) {
-            String s = q.getFirst();
-            if (commits1.contains(s)) {
+        // 第二次遍历：从 hash2 开始 BFS，找第一个出现在 ancestors1 中的节点
+        queue.clear();
+        queue.addLast(hash2);
+        while (!queue.isEmpty()) {
+            String s = queue.removeFirst();
+            if (ancestors1.contains(s))
                 return s;
-            }
-            q.pop();
             Commit c = readObject(join(COMMITS_DIR, s), Commit.class);
-            if (c.parent1 != null) {
-                q.addLast(c.parent1);
-            }
-            if (c.parent2 != null) {
-                q.addLast(c.parent2);
-            }
+            if (c.parent1 != null) queue.addLast(c.parent1);
+            if (c.parent2 != null) queue.addLast(c.parent2);
         }
-        return null; // 不应该出现
+        return null;
     }
 }
