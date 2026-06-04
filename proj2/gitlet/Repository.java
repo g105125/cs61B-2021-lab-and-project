@@ -324,7 +324,7 @@ public class Repository {
                 if(!delstorage.contains(s)){
                     notstaged.add(s);
                 }
-                break;
+                continue;
             }
             String filetext=readContentsAsString(f);
             if(headcommit.files.get(s)!=null&&!filetext.equals(readContentsAsString(join(BLOBS_DIR,headcommit.files.get(s))))&&addstorage.get(s)==null)
@@ -334,7 +334,7 @@ public class Repository {
             File f=join(CWD,s);
             if(!f.exists()){
                 notstaged.add(s);
-                break;
+                continue;
             }
             if(!readContentsAsString(f).equals(readContentsAsString(join(BLOBS_DIR,addstorage.get(s)))))notstaged.add(s);
         }
