@@ -71,6 +71,55 @@ public class Main {
                }
                 System.out.println("Incorrect operands.");
                 break;
+            case "global-log":
+                if(args.length!=1){
+                    System.out.println("Incorrect operands.");
+                    break;
+                }
+                gitlet.Repository.Global_log();
+                break;
+            case "find":
+                if(args.length!=2){
+                    System.out.println("Incorrect operands.");
+                    break;
+                }
+                gitlet.Repository.Find(args[1]);
+                break;
+            case "status":
+                if(args.length!=1){
+                    System.out.println("Incorrect operands.");
+                    break;
+                }
+                gitlet.Repository.Status();
+                break;
+            case "branch":
+                if(args.length!=2){
+                    System.out.println("Incorrect operands.");
+                    break;
+                }
+                gitlet.Repository.Branch(args[1]);
+                break;
+            case "rm-branch":
+                if(args.length!=2){
+                    System.out.println("Incorrect operands.");
+                    break;
+                }
+                gitlet.Repository.Rm_branch(args[1]);
+                break;
+            case "reset":
+                if(args.length!=2){
+                    System.out.println("Incorrect operands.");
+                    break;
+                }
+                gitlet.Repository.Reset(args[1]);
+                break;
+            case "merge":
+                if(args.length!=2){
+                    System.out.println("Incorrect operands.");
+                    break;
+                }
+                gitlet.Repository.Merge(args[1]);
+                break;
             default:
                 System.out.println("No command with that name exists.");
                 break;
