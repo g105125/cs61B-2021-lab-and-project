@@ -82,6 +82,7 @@ public class Repository {
             if (delstorage.contains(filename)) {
                 delstorage.remove(filename);
             }
+            writeObject(DELSTORAGE,delstorage);
             return;
         }
         File blobfile = join(BLOBS_DIR, blobname);
@@ -178,8 +179,9 @@ public class Repository {
             System.out.println("===");
             System.out.println("commit " + name);
             if (c.getParent2() != null) {
-                System.out.println("Merge: " + c.getParent1() + " "
-                        + c.getParent2());
+                String p1 = c.getParent1().substring(0, 7);
+                String p2 = c.getParent2().substring(0, 7);
+                System.out.println("Merge: " + p1 + " " + p2);
             }
             System.out.println("Date: " + c.getDate());
             System.out.println(c.getMessage());
@@ -321,8 +323,9 @@ public class Repository {
             System.out.println("===");
             System.out.println("commit " + s);
             if (c.getParent2() != null) {
-                System.out.println("Merge: " + c.getParent1() + " "
-                        + c.getParent2());
+                String p1 = c.getParent1().substring(0, 7);
+                String p2 = c.getParent2().substring(0, 7);
+                System.out.println("Merge: " + p1 + " " + p2);
             }
             System.out.println("Date: " + c.getDate());
             System.out.println(c.getMessage());

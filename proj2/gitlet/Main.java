@@ -51,19 +51,15 @@ public class Main {
                 Repository.log();
                 break;
             case "checkout":
-                if (args.length == 3) {
+                if (args.length == 3 && args[1].equals("--")) {
                     Repository.checkout1(args[2]);
-                    break;
-                }
-                if (args.length == 2) {
-                    Repository.checkout3(args[1]);
-                    break;
-                }
-                if (args.length == 4) {
+                } else if (args.length == 4 && args[2].equals("--")) {
                     Repository.checkout2(args[1], args[3]);
-                    break;
+                } else if (args.length == 2) {
+                    Repository.checkout3(args[1]);
+                } else {
+                    System.out.println("Incorrect operands.");
                 }
-                System.out.println("Incorrect operands.");
                 break;
             case "global-log":
                 if (args.length != 1) {
