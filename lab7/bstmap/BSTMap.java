@@ -42,8 +42,8 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K,V>
             this.right=null;
         }
     }
-    public node root;
-    public int size;
+    private node root;
+    private int size;
     public BSTMap(){
         this.size=0;
         this.root=null;
@@ -136,7 +136,7 @@ public class BSTMap<K extends Comparable<K>,V> implements Map61B<K,V>
 
 
     @Override
-    public Set keySet() {
+    public Set<K> keySet() {
         TreeSet<K> ret=new TreeSet<K>();
         keysetf(ret,this.root);
         return ret;
