@@ -103,7 +103,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
             this.keysetStorage.add(key);
         }
     }
-    public void resize(int newbucketssize){
+    private void resize(int newbucketssize){
         this.bucketsSize=newbucketssize;
         Collection<Node>[]newbuckets=createTable(newbucketssize);
         for(Collection<Node>bucket:this.buckets){
